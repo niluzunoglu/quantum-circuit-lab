@@ -4,9 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2852b228-6d8e-4866-b62e-999fbb02b52d" name="Changes" comment="UPD: README.md&#10;UPD: app.py">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
+    <list default="true" id="2852b228-6d8e-4866-b62e-999fbb02b52d" name="Changes" comment="FIX: app.py allow safe html error">
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -195,13 +194,22 @@
       <option name="project" value="LOCAL" />
       <updated>1770068770344</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="FIX: app.py allow safe html error">
+      <option name="closed" value="true" />
+      <created>1770069265739</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1770069265739</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="CHG: Streamlit files" />
     <MESSAGE value="UPD: README.md" />
     <MESSAGE value="UPD: README.md&#10;UPD: app.py" />
-    <option name="LAST_COMMIT_MESSAGE" value="UPD: README.md&#10;UPD: app.py" />
+    <MESSAGE value="FIX: app.py allow safe html error" />
+    <option name="LAST_COMMIT_MESSAGE" value="FIX: app.py allow safe html error" />
   </component>
 </project>

@@ -9,6 +9,13 @@ This repository contains a Python-based implementation of fundamental quantum al
 - Simulation Engine: Local execution using AerSimulator for high-fidelity result analysis.
 - Visualization: Integrated graphical user interface for real-time circuit drawing and histogram generation.
 
+## Project Roadmap
+- [ ] Integration with IBM Quantum Experience (Real Hardware Execution)
+- [ ] Implementation of BB84 Quantum Key Distribution Protocol
+- [ ] Support for Noise Modeling and Thermal Relaxation Simulation
+- [ ] Advanced Visualizations (Bloch Multivectors and Density Matrices)
+- [ ] Automated Unit Testing for Quantum Circuits using Qiskit Terra
+
 ### Installation and Usage
 Follow the steps below to set up the local development environment:
 
