@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2852b228-6d8e-4866-b62e-999fbb02b52d" name="Changes" comment="CHG: Streamlit files">
+    <list default="true" id="2852b228-6d8e-4866-b62e-999fbb02b52d" name="Changes" comment="UPD: README.md">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
@@ -180,11 +180,20 @@
       <option name="project" value="LOCAL" />
       <updated>1770068138522</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="UPD: README.md">
+      <option name="closed" value="true" />
+      <created>1770068227951</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1770068227951</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="CHG: Streamlit files" />
-    <option name="LAST_COMMIT_MESSAGE" value="CHG: Streamlit files" />
+    <MESSAGE value="UPD: README.md" />
+    <option name="LAST_COMMIT_MESSAGE" value="UPD: README.md" />
   </component>
 </project>

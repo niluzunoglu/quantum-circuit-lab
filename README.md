@@ -1,4 +1,4 @@
-# Quantum-Algorithm-Lab: Implementation of Grover and Shor/QFT
+# Quantum-Circuit-Lab: Implementation of Grover and Shor/QFT
 
 ### Description
 This repository contains a Python-based implementation of fundamental quantum algorithms using the IBM Qiskit framework. The project aims to demonstrate the practical application of quantum gate logic and provide a visual simulation environment for analyzing quantum state probability distributions. The implementation focuses on the Grover Search Algorithm for unstructured data and the Quantum Fourier Transform (QFT), which is the computational core of Shor's Factoring Algorithm.
