@@ -13,7 +13,7 @@ This repository contains a Python-based implementation of fundamental quantum al
 Follow the steps below to set up the local development environment:
 
 1. Clone the repository:
-   git clone https://github.com/niluzunoglu/quantum-algorithm-lab.git
+   git clone https://github.com/niluzunoglu/quantum-circuit-lab.git
 
 2. Install the required dependencies:
    pip install -r requirements.txt
