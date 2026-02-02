@@ -1,53 +1,60 @@
 import streamlit as st
 from qiskit import QuantumCircuit
 from qiskit_aer import AerSimulator
-from qiskit.visualization import plot_histogram, plot_bloch_multivector
+from qiskit.visualization import plot_histogram
+from qiskit.circuit.library import GroverOperator, QFT
 import matplotlib.pyplot as plt
 
-st.set_page_config(page_title="Quantum Circuit Lab", layout="wide")
+st.set_page_config(page_title="Quantum Algorithm Lab", layout="wide")
 
-st.title("Quantum Circuit Lab")
-st.write("Bu proje, kuantum hesaplama temellerini görselleştirmek için geliştirilmiştir.")
+st.title("⚛️ Quantum Algorithm Exploratory")
+st.write("Bu araç, karmaşık kuantum algoritmalarının nasıl çalıştığını anlamak için tasarlanmıştır.")
 
-st.sidebar.header("Devre Ayarları")
-n_qubits = st.sidebar.slider("Qubit Sayısı", 1, 3, 1)
-gate_selection = st.sidebar.multiselect(
-    "Uygulanacak Kapılar",
-    ["Hadamard (H)", "Pauli-X (NOT)", "CNOT"],
-    default=["Hadamard (H)"]
-)
+# Algoritma Seçimi
+algo = st.sidebar.selectbox("Algoritma Seçin", ["Temel Kapılar", "Grover Algoritması", "Shor (QFT Temelli)"])
 
-qc = QuantumCircuit(n_qubits)
+if algo == "Grover Algoritması":
+    st.header("🔍 Grover Algoritması")
+    st.write("Veritabanı arama problemlerinde klasik algoritmalara göre karesel hızlanma sağlar.")
 
-if "Hadamard (H)" in gate_selection:
-    qc.h(0)
-if "Pauli-X (NOT)" in gate_selection:
-    qc.x(0)
-if "CNOT" in gate_selection and n_qubits > 1:
-    qc.cx(0, 1)
+    # Basit bir 2-qubit Grover devresi (Hedef: '11' durumu)
+    n_qubits = 2
+    qc = QuantumCircuit(n_qubits)
+    qc.h(range(n_qubits))  # Süperpozisyon
 
-st.subheader("1. Kuantum Devre Şeması")
-fig_circuit = qc.draw(output='mpl')
-st.pyplot(fig_circuit)
+    # Oracle (Hedefi işaretleme: 11)
+    qc.cz(0, 1)
 
-st.subheader("2. Simülasyon Sonuçları")
-backend = AerSimulator()
-qc.measure_all()
-job = backend.run(qc, shots=1024)
-result = job.result()
-counts = result.get_counts()
+    # Diffuser (Yansıtma)
+    qc.h(range(n_qubits))
+    qc.z(range(n_qubits))
+    qc.cz(0, 1)
+    qc.h(range(n_qubits))
 
-col1, col2 = st.columns(2)
-with col1:
-    st.write("Olasılık Dağılımı")
+    st.subheader("Grover Devre Şeması")
+    st.pyplot(qc.draw(output='mpl'))
+
+
+elif algo == "Shor (QFT Temelli)":
+    st.header("🔑 Shor Algoritması & QFT")
+    st.write("Shor algoritmasının kalbi olan Kuantum Fourier Dönüşümü (QFT), periyot bulma işlemini yapar.")
+
+    n_qubits = st.slider("Qubit Sayısı (QFT Hassasiyeti)", 2, 5, 3)
+    qc = QFT(num_qubits=n_qubits).decompose()
+
+    st.subheader(f"{n_qubits} Qubitlik QFT Devresi")
+    st.pyplot(qc.draw(output='mpl'))
+
+
+else:
+    st.info("Lütfen soldaki menüden bir algoritma seçerek simülasyonu başlatın.")
+
+# Ortak Simülasyon Motoru
+if st.button("Simülasyonu Çalıştır"):
+    backend = AerSimulator()
+    qc.measure_all()
+    result = backend.run(qc).result()
+    counts = result.get_counts()
+
+    st.subheader("Simülasyon Çıktısı (Olasılıklar)")
     st.pyplot(plot_histogram(counts))
-
-with col2:
-    st.info("Bu bölümde qubitlerin süperpozisyon ve dolanıklık durumları simüle edilir.")
-
-with st.expander("📖 Kuantum Kapıları Hakkında Bilgi"):
-    st.markdown("""
-    - **Hadamard (H):** Qubiti süperpozisyon durumuna sokar.
-    - **Pauli-X:** Klasik bilgisayardaki NOT kapısının karşılığıdır.
-    - **CNOT:** İki qubit arasında dolanıklık (entanglement) oluşturur.
-    """)
