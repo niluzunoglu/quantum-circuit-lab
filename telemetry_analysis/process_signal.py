@@ -1,46 +1,56 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 
-# Dosya yolu
-DATA_PATH = "telemetry_analysis/data/voyager2_magnetic_1979.asc"
+DATA_PATH = "telemetry_analysis/data/voyager2_jupiter_s3.tab"
 
 
 def load_and_visualize():
-    # Sütun İsimleri (NASA dökümantasyonuna göre)
-    # Col 1: Spacecraft ID, Col 2: Coord Sys, Col 3: Year, Col 4: Day, Col 5: Hour, Col 6: Magnetic Field (B) Magnitude
-    column_names = ["sc_id", "coord_sys", "year", "day", "hour", "B_mag", "B_avg", "elevation", "azimuth"]
+    print(f"📂 Dosya analiz ediliyor: {DATA_PATH}")
 
-    # Veriyi Oku (Boşluklarla ayrılmış veri)
     try:
-        df = pd.read_csv(DATA_PATH, delim_whitespace=True, names=column_names, header=None)
+        # DÜZELTME: Veri virgülle ayrılmış (sep=',') ve başlığı yok (header=None)
+        # on_bad_lines='skip' ile bozuk satır varsa atlarız.
+        df = pd.read_csv(DATA_PATH, header=None, sep=',', on_bad_lines='skip')
 
-        # Sadece Jüpiter'e yaklaştığı (örneğin 180. gün civarı) bir kesiti alalım
-        # Çok büyük veriyi çizdirmemek için ilk 1000 örneği alıyoruz
-        signal_slice = df['B_mag'].iloc[5000:6000]
+        # Sütun İsimlendirme (Vektör hesabına göre analiz edildi)
+        # 0: Time
+        # 5, 6, 7: Bx, By, Bz (Bileşenler)
+        # 8: B_Magnitude (Alan Şiddeti - Aradığımız veri)
+        df = df.rename(columns={0: 'Time', 8: 'B_Mag'})
 
-        print(f"📊 Veri Yüklendi. Toplam Satır: {len(df)}")
-        print(df.head())
+        # Zaman formatını düzelt
+        df['Time'] = pd.to_datetime(df['Time'])
 
-        # Görselleştirme
+        # Jüpiter Geçiş Anı (9 Temmuz 1979)
+        start_date = '1979-07-08'
+        end_date = '1979-07-10'
+
+        mask = (df['Time'] >= start_date) & (df['Time'] <= end_date)
+        df_zoom = df.loc[mask]
+
+        print(f"📊 Toplam Veri: {len(df)} satır")
+        print(f"🚀 Jüpiter Yakın Geçiş Verisi: {len(df_zoom)} satır")
+
+        # Çizim
         plt.figure(figsize=(12, 6))
-        plt.plot(signal_slice.values, label='Voyager 2 - Magnetic Field (nT)', color='cyan', linewidth=0.8)
-        plt.title('Voyager 2 Deep Space Telemetry (Jupiter Flyby - 1979)')
-        plt.xlabel('Time (48s intervals)')
-        plt.ylabel('Magnetic Field Magnitude (nT)')
-        plt.legend()
-        plt.grid(True, which='both', linestyle='--', linewidth=0.5)
+        plt.plot(df_zoom['Time'], df_zoom['B_Mag'], color='#00ffcc', linewidth=1.5, label='Magnetic Magnitude')
 
-        plt.gca().set_facecolor('black')
-        plt.gcf().set_facecolor('#1e1e1e')
+        plt.title('Voyager 2: Jupiter Bow Shock Crossing (Real Data)', fontsize=14, color='white')
+        plt.xlabel('Date (July 1979)', fontsize=12, color='white')
+        plt.ylabel('Magnetic Field (nT)', fontsize=12, color='white')
+
+        # Tema
+        plt.grid(True, linestyle='--', alpha=0.3)
+        plt.gca().set_facecolor('#0b0c10')
+        plt.gcf().set_facecolor('#1f2833')
         plt.tick_params(colors='white')
-        plt.title('Voyager 2 Telemetry', color='white')
-        plt.ylabel('Magnitude', color='white')
-        plt.xlabel('Samples', color='white')
+        plt.legend()
+        plt.tight_layout()
 
         plt.show()
 
-    except FileNotFoundError:
-        print("❌ Dosya bulunamadı! Önce 'fetch_data.py' dosyasını çalıştırın.")
+    except Exception as e:
+        print(f"⚠️ Hata: {e}")
 
 
 if __name__ == "__main__":
