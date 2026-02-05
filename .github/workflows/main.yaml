@@ -6,6 +6,10 @@ on:
   pull_request:
     branches: [ main ]
 
+before_script:
+  - git config user.email "nily.uzun17@gmail.com"
+  - git config user.name "niluzunoglu"
+
 jobs:
   test:
     runs-on: ubuntu-latest
