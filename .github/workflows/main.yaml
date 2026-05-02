@@ -6,17 +6,44 @@ on:
   pull_request:
     branches: [ main ]
 
-before_script:
-  - git config user.email "nily.uzun17@gmail.com"
-  - git config user.name "niluzunoglu"
-
 jobs:
   test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.9', '3.11', '3.12']
+    
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install pytest pytest-cov
+
+    - name: Run Quantum Logic Tests
+      run: |
+        pytest tests/ -v --cov=. --cov-report=xml
+
+    - name: Upload Coverage Reports
+      uses: codecov/codecov-action@v3
+      with:
+        files: ./coverage.xml
+        flags: unittests
+        name: codecov-umbrella
+
+  code-quality:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
 
-    - name: Set up Python 3.12
+    - name: Set up Python
       uses: actions/setup-python@v4
       with:
         python-version: '3.12'
@@ -24,9 +51,16 @@ jobs:
     - name: Install Dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install -r requirements.txt
-        pip install pytest
+        pip install pylint black isort
 
-    - name: Run Quantum Logic Tests
+    - name: Check Code Format with Black
       run: |
-        pytest tests/
+        black --check . || true
+
+    - name: Check Import Order with isort
+      run: |
+        isort --check-only . || true
+
+    - name: Lint with Pylint
+      run: |
+        pylint *.py case1_voyager_telemetry_analysis/*.py case2_anomaly_detection/*.py tests/*.py || true
